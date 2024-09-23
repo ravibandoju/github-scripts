@@ -31,6 +31,15 @@ To add a team to multiple repositories from a CSV file:
 python add_teams_to_repositories.py add-team --org your_org --token your_token --team-slug your_team_slug --csv-file repos.csv --permission push
 ```
 
+### Sample CSV File
+Create a CSV file named repos.csv with the following format:
+
+```sh
+repo1
+repo2
+repo3
+```
+
 ### Arguments
 - `--org`: GitHub organization name (required)
 - `--token`: GitHub personal access token (required)
