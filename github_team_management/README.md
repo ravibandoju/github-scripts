@@ -23,12 +23,12 @@ pip install -r requirements.txt
 ### Adding a Team to Repositories
   To add a team to a single repository:
 ```sh    
-python add_teams_to_repositories.py add-team --org your_org --token your_token --team-slug your_team_slug --repo-name your_repo_name --permission push
+python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --repo-name your_repo_name --permission push
 ```
 
 To add a team to multiple repositories from a CSV file:
 ```sh
-python add_teams_to_repositories.py add-team --org your_org --token your_token --team-slug your_team_slug --csv-file repos.csv --permission push
+python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --csv-file repos.csv --permission push
 ```
 
 ### Sample CSV File
@@ -51,7 +51,7 @@ repo3
 ## Listing Teams and Their Roles
 To list all associated teams and their roles for all repositories in the organization and export the data to a CSV file:
 ```sh
-python add_teams_to_repositories.py list-teams --org your_org --token your_token
+python manage_teams.py list-teams --org your_org --token your_token
 ```
 
 ### Arguments
