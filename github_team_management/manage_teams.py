@@ -14,7 +14,12 @@ def headers(token):
         'Accept': 'application/vnd.github.v3+json'
     }
 
-def add_team_to_repo(org, token, team_slug, repo_name, permission='push'):
+def team_exists(org, team_slug, token):
+    url = f"https://api.github.com/orgs/{org}/teams/{team_slug}"
+    response = requests.get(url, headers=headers(token))
+    return response.status_code == 200
+
+def add_team_to_repo(org, token, team_slug, repo_name, permission='read'):
     """
     Add a team to a repository with the specified permission.
     """
@@ -126,7 +131,7 @@ def main():
     add_parser.add_argument('--team-slug', required=True, help='Slug of the GitHub team')
     add_parser.add_argument('--repo-name', help='Name of the repository')
     add_parser.add_argument('--csv-file', help='CSV file containing repository names')
-    add_parser.add_argument('--permission', default='push', choices=['pull', 'push', 'admin', 'maintain', 'triage'], help='Roles: admin, maintain, push (write), triage, pull (read). Default role: push')
+    add_parser.add_argument('--permission', default='read', choices=['read', 'write', 'admin', 'maintain', 'triage'], help='Roles: admin, maintain, write, triage, read. Default role: read')
 
     # Subparser for listing teams
     list_parser = subparsers.add_parser('list-teams', help='List all associated teams and their roles for all repositories in the organization.')
@@ -140,6 +145,8 @@ def main():
         write_teams_to_csv(args.org, args.token, csv_filename)
     elif args.command == 'add-team':
         permission = args.permission.lower()
+        permission = 'pull' if permission == 'read' else permission
+        permission = 'push' if permission == 'write' else permission
 
         if args.csv_file:
             repo_names = get_repo_names_from_csv(args.csv_file)
@@ -148,8 +155,11 @@ def main():
         else:
             logging.error("Error: You must provide either --repo-name or --csv-file.")
             exit(1)
-
-        add_teams_to_repos(args.org, args.token, args.team_slug, repo_names, permission)
+            
+        if team_exists(args.org, args.team_slug, args.token):
+            add_teams_to_repos(args.org, args.token, args.team_slug, repo_names, permission)
+        else:
+            print(f"Team '{args.team_slug}' does not exist in organization '{args.org}'.")
 
 if __name__ == "__main__":
     main()
