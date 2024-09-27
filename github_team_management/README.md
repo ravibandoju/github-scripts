@@ -23,12 +23,12 @@ pip install -r requirements.txt
 ### Adding a Team to Repositories
   To add a team to a single repository:
 ```sh    
-python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --repo-name your_repo_name --permission push
+python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --repo-name your_repo_name --permission read
 ```
 
 To add a team to multiple repositories from a CSV file:
 ```sh
-python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --csv-file repos.csv --permission push
+python manage_teams.py add-team --org your_org --token your_token --team-slug your_team_slug --csv-file repos.csv --permission read
 ```
 
 ### Sample CSV File
@@ -46,7 +46,7 @@ repo3
 - `--team-slug`: Slug of the GitHub team (required)
 - `--repo-name`: Name of the repository (optional if --csv-file is provided)
 - `--csv-file`: CSV file containing repository names (optional if --repo-name is provided)
-- `--permission`: Permission level for the team (default: push). Choices are pull, push, admin, maintain, triage.
+- `--permission`: Permission level for the team (default: read). Choices are read, write, admin, maintain, triage.
 
 ## Listing Teams and Their Roles
 To list all associated teams and their roles for all repositories in the organization and export the data to a CSV file:
